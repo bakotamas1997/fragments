@@ -8,6 +8,8 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello world!", feature: "Added nodemon!" });
 });
 
+app.use("/users", require("./routes/user"));
+
 app.listen(port, () => {
   console.log(`Example app listening on port: ${port}`);
 });
