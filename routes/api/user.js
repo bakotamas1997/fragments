@@ -1,8 +1,8 @@
-const User = require("../model/user");
+const User = require("../../model/user");
 const api = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const auth = require("../middleware/auth");
+const auth = require("../../middleware/auth");
 
 api.post("/login", (req, res) => {
   User.findOne({ email: req.body.email }).then((user) => {
@@ -24,7 +24,7 @@ api.post("/login", (req, res) => {
 
       jwt.sign(
         payload,
-        require("../secret").secret,
+        require("../../secret").secret,
         {
           expiresIn: 7200,
         },
@@ -68,7 +68,7 @@ api.post("/register", (req, res) => {
 
         jwt.sign(
           payload,
-          require("../secret").secret,
+          require("../../secret").secret,
           { expiresIn: 7200 },
           (err, token) => {
             if (err) {
