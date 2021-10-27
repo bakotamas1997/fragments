@@ -1,14 +1,14 @@
 require("./config/db").connect();
+const { urlencoded } = require("express");
 const express = require("express");
+const users = require("./routes/user");
 
 const app = express();
 const port = 3000;
 
-app.get("/", (req, res) => {
-  res.json({ message: "Hello world!", feature: "Added nodemon!" });
-});
+app.use(urlencoded({ extended: false }));
 
-app.use("/users", require("./routes/user"));
+app.use("/users", users);
 
 app.listen(port, () => {
   console.log(`Example app listening on port: ${port}`);
