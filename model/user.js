@@ -21,6 +21,12 @@ const userSchema = new mongoose.Schema({
   token: {
     type: String,
   },
+  projects: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "project",
+    },
+  ],
 });
 
 module.exports = mongoose.model("user", userSchema);
