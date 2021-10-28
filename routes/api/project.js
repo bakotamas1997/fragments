@@ -31,4 +31,26 @@ router.get("/", auth, (req, res) => {
     });
 });
 
+router.put("/:project_id/:user_id", auth, (req, res) => {
+  User.findById(req.user.id)
+    .populate("projects")
+    .then((user) => {
+      const isUserInProject =
+        user.projects.filter((project) => {
+          return project._id.toString() === req.params.project_id;
+        }).length > 0;
+
+      if (isUserInProject) {
+        User.findById(req.params.user_id).then((user) => {
+          Project.findById(req.params.project_id).then((project) => {
+            user.projects.unshift(project);
+            user.save().then(res.json(project));
+          });
+        });
+      } else {
+        return res.status(401).json({ error: "Not authorized." });
+      }
+    });
+});
+
 module.exports = router;
