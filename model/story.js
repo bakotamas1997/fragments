@@ -10,15 +10,9 @@ const Story = new mongoose.Schema({
     required: true,
   },
   owner: {
-    type: String,
-    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
   },
-  tags: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "tag",
-    },
-  ],
 });
 
 module.exports = mongoose.model("story", Story);
