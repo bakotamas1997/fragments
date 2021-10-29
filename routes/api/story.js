@@ -34,8 +34,38 @@ router.post("/:project_id", auth, (req, res) => {
         owner: user,
       });
 
-      project.stories.unshift(story);
-      project.save().then((project) => res.json(project));
+      story.save().then((story) => {
+        project.stories.unshift(story);
+        project.save().then((project) => res.json(project));
+      });
+    });
+  });
+});
+
+router.get("/:project_id/:story_id", auth, (req, res) => {
+  User.findById(req.user.id).then((user) => {
+    const selectedProject = user.projects.filter(
+      (project) => project._id.toString() === req.params.project_id
+    );
+
+    if (selectedProject[0].length < 1) {
+      return res
+        .status(401)
+        .json({ error: "No permission to get story from the project." });
+    }
+
+    Project.findById(req.params.project_id).then((project) => {
+      const selectedStory = project.stories.filter(
+        (story) => story._id.toString() === req.params.story_id
+      );
+
+      if (selectedStory.length < 1) {
+        return res.status(404).json({ error: "No story found with given id." });
+      }
+
+      Story.findById(selectedStory[0]._id.toString())
+        .populate("owner", ["firstName", "lastName", "email"])
+        .then((story) => res.json(story));
     });
   });
 });
