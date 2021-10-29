@@ -70,4 +70,40 @@ router.get("/:project_id/:story_id", auth, (req, res) => {
   });
 });
 
+router.put("/:project_id/:story_id", auth, (req, res) => {
+  User.findById(req.user.id).then((user) => {
+    const selectedProject = user.projects.filter(
+      (project) => project._id.toString() === req.params.project_id
+    );
+
+    if (selectedProject[0].length < 1) {
+      return res
+        .status(401)
+        .json({ error: "No permission to add story to the project." });
+    }
+
+    if (!req.body.name && !req.body.description) {
+      return res.status(400).json({ error: "Please give a valid input." });
+    }
+
+    Project.findById(req.params.project_id).then((project) => {
+      const selectedStory = project.stories.filter(
+        (story) => story._id.toString() === req.params.story_id
+      );
+
+      if (selectedStory.length < 1) {
+        return res.status(404).json({ error: "No story found with given id." });
+      }
+
+      Story.findById(selectedStory[0]._id.toString())
+        .populate("owner", ["firstName", "lastName", "email"])
+        .then((story) => {
+          story.name = req.body.name || story.name;
+          story.description = req.body.description || story.description;
+          story.save().then((story) => res.json(story));
+        });
+    });
+  });
+});
+
 module.exports = router;
