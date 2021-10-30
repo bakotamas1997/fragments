@@ -4,9 +4,10 @@ const User = require("../../model/user");
 const Project = require("../../model/project");
 const Story = require("../../model/story");
 const Subtask = require("../../model/subtask");
+const Tag = require("../../model/tag");
 
 const auth = require("../../middleware/auth");
-const { isProjectValid, isStoryValid } = require("../helper");
+const { isProjectValid, isStoryValid, isSubtaskValid } = require("../helper");
 
 router.post("/:project_id/:story_id/", auth, (req, res) => {
   User.findById(req.user.id).then((user) => {
@@ -86,6 +87,35 @@ router.get("/:project_id/:story_id/", auth, (req, res) => {
         .then((story) => {
           res.json(story.subtasks);
         });
+    });
+  });
+});
+
+router.put("/:project_id/:story_id/:subtask_id/:tag_id", auth, (req, res) => {
+  User.findById(req.user.id).then((user) => {
+    if (!isProjectValid(user, req)) {
+      return res.status(404).json({ error: "Could not find project." });
+    }
+    Project.findById(req.params.project_id).then((project) => {
+      if (!isStoryValid(project, req)) {
+        return res.status(404).json({ error: "Could not find story." });
+      }
+      Story.findById(req.params.story_id).then((story) => {
+        if (!isSubtaskValid(story, req)) {
+          return res.status(404).json({ error: "Could not find subtask." });
+        }
+
+        Subtask.findById(req.params.subtask_id).then((subtask) => {
+          Tag.findById(req.params.tag_id)
+            .then((tag) => {
+              subtask.tags.unshift(tag);
+              subtask.save().then((subtask) => res.json(subtask));
+            })
+            .catch((err) => {
+              return res.status(404).json({ error: "Could not find tag." });
+            });
+        });
+      });
     });
   });
 });

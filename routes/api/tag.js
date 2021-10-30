@@ -1,12 +1,7 @@
 const router = require("express").Router();
-const User = require("../../model/user");
-const Project = require("../../model/project");
-const Story = require("../../model/story");
-const Subtask = require("../../model/subtask");
 const Tag = require("../../model/tag");
 
 const auth = require("../../middleware/auth");
-const { isProjectValid, isStoryValid } = require("../helper");
 
 router.get("/", auth, (req, res) => {
   Tag.find().then((tags) => res.json(tags));
