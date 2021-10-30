@@ -6,19 +6,15 @@ const User = require("../../model/user");
 const Story = require("../../model/story");
 const Project = require("../../model/project");
 
+const { isProjectValid, isStoryValid } = require("../helper");
+
 //POST api/stories/:project_id
 //Create a post
 //Private
 router.post("/:project_id", auth, (req, res) => {
   User.findById(req.user.id).then((user) => {
-    const selectedProject = user.projects.filter(
-      (project) => project._id.toString() === req.params.project_id
-    );
-
-    if (selectedProject[0].length < 1) {
-      return res
-        .status(401)
-        .json({ error: "No permission to add story to the project." });
+    if (!isProjectValid(user, req)) {
+      return res.status(404).json({ error: "Could not find project." });
     }
 
     if (!req.body.name || !req.body.description) {
@@ -32,6 +28,7 @@ router.post("/:project_id", auth, (req, res) => {
         name: req.body.name,
         description: req.body.description,
         owner: user,
+        subtasks: [],
       });
 
       story.save().then((story) => {
@@ -44,23 +41,13 @@ router.post("/:project_id", auth, (req, res) => {
 
 router.get("/:project_id/:story_id", auth, (req, res) => {
   User.findById(req.user.id).then((user) => {
-    const selectedProject = user.projects.filter(
-      (project) => project._id.toString() === req.params.project_id
-    );
-
-    if (selectedProject[0].length < 1) {
-      return res
-        .status(401)
-        .json({ error: "No permission to get story from the project." });
+    if (!isProjectValid(user, req)) {
+      return res.status(404).json({ error: "Could not find project." });
     }
 
     Project.findById(req.params.project_id).then((project) => {
-      const selectedStory = project.stories.filter(
-        (story) => story._id.toString() === req.params.story_id
-      );
-
-      if (selectedStory.length < 1) {
-        return res.status(404).json({ error: "No story found with given id." });
+      if (!isStoryValid(project, req)) {
+        return res.status(404).json({ error: "Could not find story." });
       }
 
       Story.findById(selectedStory[0]._id.toString())
@@ -70,16 +57,24 @@ router.get("/:project_id/:story_id", auth, (req, res) => {
   });
 });
 
+router.get("/:project_id/", auth, (req, res) => {
+  User.findById(req.user.id).then((user) => {
+    if (!isProjectValid(user, req)) {
+      return res.status(404).json({ error: "Could not find project." });
+    }
+
+    Project.findById(req.params.project_id)
+      .populate("stories")
+      .then((project) => {
+        res.json(project.stories);
+      });
+  });
+});
+
 router.put("/:project_id/:story_id", auth, (req, res) => {
   User.findById(req.user.id).then((user) => {
-    const selectedProject = user.projects.filter(
-      (project) => project._id.toString() === req.params.project_id
-    );
-
-    if (selectedProject[0].length < 1) {
-      return res
-        .status(401)
-        .json({ error: "No permission to add story to the project." });
+    if (!isProjectValid(user, req)) {
+      return res.status(404).json({ error: "Could not find project." });
     }
 
     if (!req.body.name && !req.body.description) {
@@ -87,15 +82,11 @@ router.put("/:project_id/:story_id", auth, (req, res) => {
     }
 
     Project.findById(req.params.project_id).then((project) => {
-      const selectedStory = project.stories.filter(
-        (story) => story._id.toString() === req.params.story_id
-      );
-
-      if (selectedStory.length < 1) {
-        return res.status(404).json({ error: "No story found with given id." });
+      if (!isStoryValid(project, req)) {
+        return res.status(404).json({ error: "Could not find story." });
       }
 
-      Story.findById(selectedStory[0]._id.toString())
+      Story.findById(req.params.story_id)
         .populate("owner", ["firstName", "lastName", "email"])
         .then((story) => {
           story.name = req.body.name || story.name;
