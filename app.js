@@ -11,6 +11,7 @@ const tags = require("./routes/api/tag");
 const app = express();
 const port = 5000;
 
+app.use(express.json());
 app.use(urlencoded({ extended: false }));
 
 app.use("/api/users", users);

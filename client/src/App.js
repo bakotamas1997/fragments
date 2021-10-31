@@ -1,9 +1,11 @@
 import "./App.css";
+import { Route } from "react-router";
+import Login from "./components/auth/Login";
 
 function App() {
   return (
     <div className="App">
-      <p>React app</p>
+      <Login />
     </div>
   );
 }
