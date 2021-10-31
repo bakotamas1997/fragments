@@ -9,7 +9,7 @@ const subtasks = require("./routes/api/subtask");
 const tags = require("./routes/api/tag");
 
 const app = express();
-const port = 3000;
+const port = 5000;
 
 app.use(urlencoded({ extended: false }));
 
