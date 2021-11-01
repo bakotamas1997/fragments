@@ -51,3 +51,27 @@ export const auth = (email, password) => {
       });
   };
 };
+
+export const register = (email, password, firstName, lastName) => {
+  return (dispatch) => {
+    dispatch(authStart());
+
+    const registerData = {
+      email: email,
+      password: password,
+      firstName: firstName,
+      lastName: lastName,
+    };
+
+    axios
+      .post("/api/users/register", registerData)
+      .then((response) => {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("email", response.data.email);
+        dispatch(authSuccess(response.data.token, response.data.email));
+      })
+      .catch((error) => {
+        dispatch(authFail(error.response.data.error));
+      });
+  };
+};

@@ -1,0 +1,31 @@
+.NavBar {
+  background-color: #24252a;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10%;
+  width: 100%;
+}
+
+.Logo {
+  color: #edf0f1;
+  font-weight: bold;
+  font-size: 24px;
+  letter-spacing: 0.5em;
+}
+
+.List {
+  color: #edf0f1;
+  list-style: none;
+}
+
+.ListItem {
+  display: inline-block;
+  padding: 0 20px;
+  transition: all 0.3s ease 0s;
+}
+
+.ListItem:hover {
+  color: #00ccff;
+}
