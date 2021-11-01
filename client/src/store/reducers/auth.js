@@ -21,6 +21,7 @@ const authReducer = (state = initialState, action) => {
         token: action.token,
         email: action.email,
         loading: false,
+        error: null,
       };
     }
     case actionTypes.AUTH_FAIL: {
@@ -35,6 +36,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         token: null,
         email: null,
+        error: null,
       };
     }
     default:

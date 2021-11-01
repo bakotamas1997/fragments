@@ -8,7 +8,7 @@ api.post("/login", (req, res) => {
   User.findOne({ email: req.body.email }).then((user) => {
     if (!user) {
       return res.status(400).json({
-        err: "There is no account associated with the given email address.",
+        error: "There is no account associated with the given email address.",
       });
     }
 

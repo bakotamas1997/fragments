@@ -10,6 +10,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.loading);
   const token = useSelector((state) => state.token);
+  const error = useSelector((state) => state.error);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,6 +50,7 @@ const Login = () => {
         <button onClick={onSubmit} className={classes.Button}>
           Submit
         </button>
+        <p className={classes.Error}>{error ? error : null}</p>
         <p>{loading ? "Loading..." : null}</p>
       </form>
     </div>

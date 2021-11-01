@@ -17,7 +17,7 @@ export const authSuccess = (token, email) => {
 
 export const authFail = (error) => {
   return {
-    type: actionTypes.AUTH_SUCCESS,
+    type: actionTypes.AUTH_FAIL,
     error: error,
   };
 };
@@ -46,6 +46,8 @@ export const auth = (email, password) => {
         localStorage.setItem("email", response.data.email);
         dispatch(authSuccess(response.data.token, response.data.email));
       })
-      .catch((err) => console.log(err));
+      .catch((error) => {
+        dispatch(authFail(error.response.data.error));
+      });
   };
 };
