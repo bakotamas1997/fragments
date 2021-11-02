@@ -13,19 +13,9 @@
   font-weight: bold;
   font-size: 24px;
   letter-spacing: 0.5em;
-}
-
-.List {
-  color: #edf0f1;
-  list-style: none;
-}
-
-.ListItem {
-  display: inline-block;
-  padding: 0 20px;
   transition: all 0.3s ease 0s;
 }
 
-.ListItem:hover {
+.Logo:hover {
   color: #00ccff;
 }
