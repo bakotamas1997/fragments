@@ -6,7 +6,6 @@ import { Fragment } from "react";
 import NavigationItem from "../../../NavigationItem/NavigationItem";
 
 const NavigationItems = ({ isAuthenticated }) => {
-  console.log(isAuthenticated);
   let permissionItems = (
     <Fragment>
       <NavigationItem link="/login">Login</NavigationItem>
@@ -18,6 +17,7 @@ const NavigationItems = ({ isAuthenticated }) => {
     <Fragment>
       <NavigationItem link="/projects">Projects</NavigationItem>
       <NavigationItem link="/tags">Tags</NavigationItem>
+      <NavigationItem link="/logout">Logout</NavigationItem>
     </Fragment>
   ) : (
     permissionItems

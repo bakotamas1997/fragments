@@ -1,5 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 export const authStart = () => {
   return {
@@ -49,6 +50,21 @@ export const auth = (email, password) => {
       .catch((error) => {
         dispatch(authFail(error.response.data.error));
       });
+  };
+};
+
+export const authCheck = (email, token) => {
+  return (dispatch) => {
+    if (token) {
+      const decoded = jwt_decode(token);
+      const currentTime = Date.now() / 1000;
+
+      if (decoded.exp < currentTime) {
+        dispatch(authLogout());
+      } else {
+        dispatch(authSuccess(localStorage.token, localStorage.email));
+      }
+    }
   };
 };
 
