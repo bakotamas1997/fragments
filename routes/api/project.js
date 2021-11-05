@@ -2,6 +2,7 @@ const router = require("express").Router();
 const auth = require("../../middleware/auth");
 const Project = require("../../model/project");
 const User = require("../../model/user");
+const Story = require("../../model/story");
 
 router.post("/", auth, (req, res) => {
   User.findById(req.user.id).then((user) => {
@@ -19,6 +20,21 @@ router.post("/", auth, (req, res) => {
     project.save().then((project) => {
       user.projects.unshift(project);
       user.save().then((user) => res.json({ projects: user.projects }));
+    });
+  });
+});
+
+router.delete("/:project_id", auth, (req, res) => {
+  User.findById(req.user.id).then((user) => {
+    Project.findById(req.params.project_id).then((project) => {
+      const stories = project.stories.map((story) => {
+        return story._id;
+      });
+      Story.deleteMany({ _id: { $in: stories } }, () => {
+        Project.deleteOne({ _id: req.params.project_id }).then(() => {
+          res.send({ message: "Success" });
+        });
+      });
     });
   });
 });

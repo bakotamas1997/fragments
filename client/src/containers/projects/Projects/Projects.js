@@ -8,6 +8,8 @@ import Button from "../../../components/UI/Button/Button";
 
 import classes from "./Projects.module.css";
 
+import axios from "axios";
+
 const Projects = () => {
   const projects = useSelector((state) => state.project.projects);
   const history = useHistory();
@@ -21,6 +23,12 @@ const Projects = () => {
     console.log(id);
   };
 
+  const onDeleteProject = (id) => {
+    axios.delete("/api/projects/" + id).then((response) => {
+      console.log(response);
+    });
+  };
+
   let displayProjects = projects
     ? projects.map((project) => {
         return (
@@ -29,6 +37,7 @@ const Projects = () => {
             description={project.description}
             key={project._id}
             onClick={() => onClickedProject(project._id)}
+            onDelete={() => onDeleteProject(project._id)}
           />
         );
       })
