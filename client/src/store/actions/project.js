@@ -26,7 +26,7 @@ export const createProject = (name, description, history) => {
     axios
       .post("/api/projects/", { name: name, description: description })
       .then((response) => {
-        dispatch(createProjectSuccess(response.data));
+        dispatch(createProjectSuccess(response.data.projects));
         history.push("/projects");
       })
       .catch((error) => {

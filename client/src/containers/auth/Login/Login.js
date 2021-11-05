@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 import { auth } from "../../../store/actions";
+import Button from "../../../components/UI/Button/Button";
+import Form from "../../../components/UI/Form/Form";
 import classes from "./Login.module.css";
 
 const Login = () => {
@@ -26,31 +28,33 @@ const Login = () => {
     authRedirect = <Redirect to="/projects" />;
   }
 
+  const formProps = [
+    {
+      type: "email",
+      value: email,
+      placeholder: "Email Address",
+      setValue: setEmail,
+    },
+    {
+      type: "password",
+      value: password,
+      placeholder: "Password",
+      setValue: setPassword,
+    },
+  ];
+
+  const errorElement = error ? <p className={classes.Error}>{error}</p> : null;
+
   return (
     <div className={classes.LoginForm}>
       {authRedirect}
       <form action={onSubmit} className={classes.Form}>
-        <h1>Login</h1>
-        <input
-          placeholder="Email Address"
-          className={classes.Input}
-          type="email"
-          id="floatingInput"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          placeholder="Password"
-          className={classes.Input}
-          type="password"
-          id="floatingPassword"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={onSubmit} className={classes.Button}>
+        <h2>Login</h2>
+        <Form form={formProps} />
+        <Button onClickHandler={onSubmit} style="regular">
           Submit
-        </button>
-        <p className={classes.Error}>{error ? error : null}</p>
+        </Button>
+        {errorElement}
         <p>{loading ? "Loading..." : null}</p>
       </form>
     </div>

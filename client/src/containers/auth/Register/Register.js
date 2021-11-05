@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 
 import { register } from "../../../store/actions";
+import Button from "../../../components/UI/Button/Button";
+import Form from "../../../components/UI/Form/Form";
 import classes from "./Register.module.css";
 
 const Register = () => {
@@ -28,43 +30,42 @@ const Register = () => {
     authRedirect = <Redirect to="/projects" />;
   }
 
+  const formProps = [
+    {
+      type: "email",
+      value: email,
+      placeholder: "Email Address",
+      setValue: setEmail,
+    },
+    {
+      type: "password",
+      value: password,
+      placeholder: "Password",
+      setValue: setPassword,
+    },
+    {
+      type: "text",
+      value: firstName,
+      placeholder: "First Name",
+      setValue: setFirstName,
+    },
+    {
+      type: "text",
+      value: lastName,
+      placeholder: "Last name",
+      setValue: setLastName,
+    },
+  ];
+
   return (
     <div className={classes.LoginForm}>
       {authRedirect}
       <form action={onSubmit} className={classes.Form}>
         <h1>Register</h1>
-        <input
-          placeholder="Email Address"
-          className={classes.Input}
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          placeholder="Password"
-          className={classes.Input}
-          type="password"
-          id="floatingPassword"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          placeholder="First name"
-          className={classes.Input}
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <input
-          placeholder="Last name"
-          className={classes.Input}
-          type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <button onClick={onSubmit} className={classes.Button}>
+        <Form form={formProps} />
+        <Button onClickHandler={onSubmit} style="regular">
           Submit
-        </button>
+        </Button>
         <p className={classes.Error}>{error ? error : null}</p>
         <p>{loading ? "Loading..." : null}</p>
       </form>

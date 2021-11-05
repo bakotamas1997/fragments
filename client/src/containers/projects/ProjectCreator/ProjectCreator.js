@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 
 import { createProject } from "../../../store/actions";
+import Button from "../../../components/UI/Button/Button";
+import Form from "../../../components/UI/Form/Form";
 
 const ProjectCreator = () => {
   const dispatch = useDispatch();
@@ -17,22 +19,28 @@ const ProjectCreator = () => {
     dispatch(createProject(name, description, history));
   };
 
+  const formProps = [
+    {
+      type: "text",
+      value: name,
+      placeholder: "Project name",
+      setValue: setName,
+    },
+    {
+      type: "text",
+      value: description,
+      placeholder: "Project description",
+      setValue: setDescription,
+    },
+  ];
+
   return (
     <div>
-      <input
-        type="text"
-        value={name}
-        placeholder="Project name"
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="text"
-        value={description}
-        placeholder="Description"
-        onChange={(e) => setDescription(e.target.value)}
-      />
+      <Form form={formProps} />
       {error ? <p>{error}</p> : null}
-      <button onClick={onSubmitHandler}>Submit</button>
+      <Button onClickHandler={onSubmitHandler} style="regular">
+        Submit
+      </Button>
     </div>
   );
 };
