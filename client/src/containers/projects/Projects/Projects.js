@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { getProjects } from "../../../store/actions";
 import Project from "../Project/Project";
+import Button from "../../../components/UI/Button/Button";
+
 import classes from "./Projects.module.css";
 
 const Projects = () => {
@@ -40,7 +42,9 @@ const Projects = () => {
     <div className={classes.ProjectContainer}>
       <h2>Projects</h2>
       <div className={classes.Projects}>{displayProjects}</div>
-      <button onClick={addProjectHandler}>Add project</button>
+      <Button onClickHandler={addProjectHandler} style="regular">
+        Add Project
+      </Button>
     </div>
   );
 };

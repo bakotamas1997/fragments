@@ -1,0 +1,13 @@
+.Regular {
+  border: none;
+  background-color: #24252a;
+  color: #edf0f1;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 10px;
+  transition: all 0.3s ease 0s;
+}
+
+.Regular:hover {
+  background-color: #00ccff;
+}
