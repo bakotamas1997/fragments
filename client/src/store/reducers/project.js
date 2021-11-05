@@ -19,7 +19,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-        projects: action.projects.slice(),
+        projects: action.projects,
       };
 
     case actionTypes.FETCH_PROJECTS_FAIL:
@@ -28,7 +28,25 @@ const reducer = (state = initialState, action) => {
         loading: false,
         error: action.error,
       };
+
+    case actionTypes.CREATE_PROJECT_SUCCESS: {
+      return {
+        ...state,
+        projects: action.projects,
+        error: null,
+      };
+    }
+
+    case actionTypes.CREATE_PROJECT_FAIL: {
+      return {
+        ...state,
+        error: action.error,
+      };
+    }
+
     default:
       return state;
   }
 };
+
+export default reducer;

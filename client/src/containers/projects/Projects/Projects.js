@@ -1,36 +1,46 @@
-import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useHistory } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
 
+import { getProjects } from "../../../store/actions";
 import Project from "../Project/Project";
+import classes from "./Projects.module.css";
 
 const Projects = () => {
-  const [projects, setProjects] = useState([]);
+  const projects = useSelector((state) => state.project.projects);
+  const history = useHistory();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    axios.get("/api/projects/").then((response) => {
-      setProjects(response.data.projects);
-    });
+    dispatch(getProjects());
   }, []);
 
   const onClickedProject = (id) => {
     console.log(id);
   };
 
-  let displayProjects = projects.map((project) => {
-    return (
-      <Project
-        name={project.name}
-        description={project.description}
-        key={project._id}
-        onClick={() => onClickedProject(project._id)}
-      />
-    );
-  });
+  let displayProjects = projects
+    ? projects.map((project) => {
+        return (
+          <Project
+            name={project.name}
+            description={project.description}
+            key={project._id}
+            onClick={() => onClickedProject(project._id)}
+          />
+        );
+      })
+    : null;
+
+  const addProjectHandler = () => {
+    history.push("/createProject");
+  };
 
   return (
-    <div>
+    <div className={classes.ProjectContainer}>
       <h2>Projects</h2>
-      {displayProjects}
+      <div className={classes.Projects}>{displayProjects}</div>
+      <button onClick={addProjectHandler}>Add project</button>
     </div>
   );
 };

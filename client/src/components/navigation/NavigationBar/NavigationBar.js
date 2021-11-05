@@ -4,7 +4,7 @@ import classes from "./NavigationBar.module.css";
 import NavigationItems from "./NavigationItems/NavigationItems";
 
 const NavigationBar = () => {
-  const token = useSelector((state) => state.token);
+  const token = useSelector((state) => state.auth.token);
 
   return (
     <header className={classes.NavBar}>

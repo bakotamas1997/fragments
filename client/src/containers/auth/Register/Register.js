@@ -8,9 +8,9 @@ import classes from "./Register.module.css";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.loading);
-  const token = useSelector((state) => state.token);
-  const error = useSelector((state) => state.error);
+  const loading = useSelector((state) => state.auth.loading);
+  const token = useSelector((state) => state.auth.token);
+  const error = useSelector((state) => state.auth.error);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

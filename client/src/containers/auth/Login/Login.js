@@ -8,9 +8,9 @@ import classes from "./Login.module.css";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.loading);
-  const token = useSelector((state) => state.token);
-  const error = useSelector((state) => state.error);
+  const loading = useSelector((state) => state.auth.loading);
+  const token = useSelector((state) => state.auth.token);
+  const error = useSelector((state) => state.auth.error);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
