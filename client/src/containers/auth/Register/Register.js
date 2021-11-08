@@ -63,9 +63,7 @@ const Register = () => {
       <form action={onSubmit} className={classes.Form}>
         <h1>Register</h1>
         <Form form={formProps} />
-        <Button onClickHandler={onSubmit} style="regular">
-          Submit
-        </Button>
+        <Button onClickHandler={onSubmit}>Submit</Button>
         <p className={classes.Error}>{error ? error : null}</p>
         <p>{loading ? "Loading..." : null}</p>
       </form>

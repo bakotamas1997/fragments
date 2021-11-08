@@ -53,7 +53,7 @@ router.get("/", auth, (req, res) => {
     });
 });
 
-router.put("/:project_id/:user_id", auth, (req, res) => {
+router.put("/:project_id/:user_email", auth, (req, res) => {
   User.findById(req.user.id)
     .populate("projects")
     .then((user) => {
@@ -63,12 +63,18 @@ router.put("/:project_id/:user_id", auth, (req, res) => {
         }).length > 0;
 
       if (isUserInProject) {
-        User.findById(req.params.user_id).then((user) => {
-          Project.findById(req.params.project_id).then((project) => {
-            user.projects.unshift(project);
-            user.save().then(res.json(project));
+        User.findOne({ email: req.params.user_email })
+          .then((user) => {
+            Project.findById(req.params.project_id).then((project) => {
+              user.projects.unshift(project);
+              user.save().then(res.json(project));
+            });
+          })
+          .catch(() => {
+            return res
+              .status(400)
+              .json({ error: "The user trying to added is not found. " });
           });
-        });
       } else {
         return res.status(401).json({ error: "Not authorized." });
       }
@@ -89,6 +95,22 @@ router.put("/:project_id", auth, (req, res) => {
       project.name = req.body.name || project.name;
       project.description = req.body.description || project.description;
       project.save().then((project) => res.json(project));
+    });
+  });
+});
+
+router.get("/:project_id", auth, (req, res) => {
+  User.findById(req.user.id).then((user) => {
+    const selectedProject = user.projects.filter((project) => {
+      return req.params.project_id === project._id.toString();
+    });
+
+    if (selectedProject.length < 0) {
+      return res.status(404).json({ error: "Cannot find project." });
+    }
+
+    Project.findById(req.params.project_id).then((project) => {
+      res.json(project);
     });
   });
 });

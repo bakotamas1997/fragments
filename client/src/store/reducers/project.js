@@ -4,6 +4,7 @@ const initialState = {
   projects: null,
   loading: false,
   error: null,
+  selectedProject: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -41,6 +42,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         error: action.error,
+      };
+    }
+
+    case actionTypes.FETCH_PROJECT: {
+      return {
+        ...state,
+        selectedProject: action.selectedProject,
       };
     }
 

@@ -2,13 +2,16 @@ import { useEffect } from "react";
 import { useHistory } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getProjects, fetchStories } from "../../../store/actions";
+import {
+  getProjects,
+  fetchStories,
+  fetchProject,
+} from "../../../store/actions";
+
 import Project from "../Project/Project";
 import Button from "../../../components/UI/Button/Button";
 
 import classes from "./Projects.module.css";
-
-import axios from "axios";
 
 const Projects = () => {
   const projects = useSelector((state) => state.project.projects);
@@ -17,16 +20,15 @@ const Projects = () => {
 
   useEffect(() => {
     dispatch(getProjects());
-  }, []);
+  }, [dispatch]);
 
-  const onClickedProject = (id) => {
+  const onViewStories = (id) => {
     dispatch(fetchStories(id, history));
   };
 
-  const onDeleteProject = (id) => {
-    axios.delete("/api/projects/" + id).then((response) => {
-      console.log(response);
-    });
+  const onEditProject = (id) => {
+    dispatch(fetchProject(id));
+    history.push("/editProject");
   };
 
   let displayProjects = projects
@@ -36,8 +38,8 @@ const Projects = () => {
             name={project.name}
             description={project.description}
             key={project._id}
-            onClick={() => onClickedProject(project._id)}
-            onDelete={() => onDeleteProject(project._id)}
+            onStories={() => onViewStories(project._id)}
+            onEdit={() => onEditProject(project._id)}
           />
         );
       })
@@ -51,9 +53,7 @@ const Projects = () => {
     <div className={classes.ProjectContainer}>
       <h2>Projects</h2>
       <div className={classes.Projects}>{displayProjects}</div>
-      <Button onClickHandler={addProjectHandler} style="regular">
-        Add Project
-      </Button>
+      <Button onClickHandler={addProjectHandler}>Add Project</Button>
     </div>
   );
 };

@@ -21,6 +21,13 @@ export const createProjectSuccess = (projects) => {
   };
 };
 
+export const fetchProject = (id) => {
+  return {
+    type: actionTypes.FETCH_PROJECT,
+    selectedProject: id,
+  };
+};
+
 export const createProject = (name, description, history) => {
   return (dispatch) => {
     axios

@@ -51,9 +51,7 @@ const Login = () => {
       <form action={onSubmit} className={classes.Form}>
         <h2>Login</h2>
         <Form form={formProps} />
-        <Button onClickHandler={onSubmit} style="regular">
-          Submit
-        </Button>
+        <Button onClickHandler={onSubmit}>Submit</Button>
         {errorElement}
         <p>{loading ? "Loading..." : null}</p>
       </form>

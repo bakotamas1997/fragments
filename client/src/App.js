@@ -12,6 +12,7 @@ import axios from "axios";
 import Projects from "./containers/projects/Projects/Projects";
 import { Logout } from "./components/navigation/Logout/Logout";
 import StoryForm from "./containers/stories/StoryForm/StoryForm";
+import ProjectProfile from "./containers/projects/ProjectProfile/ProjectProfile";
 
 const setAuthToken = (token) => {
   if (token) {
@@ -43,6 +44,7 @@ function App() {
         <Route path="/createProject" component={ProjectCreator} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/createStory" component={StoryForm} />
+        <Route path="/editProject" component={ProjectProfile} />
       </Switch>
     </div>
   );

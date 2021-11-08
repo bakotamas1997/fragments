@@ -38,9 +38,7 @@ const ProjectCreator = () => {
     <div>
       <Form form={formProps} />
       {error ? <p>{error}</p> : null}
-      <Button onClickHandler={onSubmitHandler} style="regular">
-        Submit
-      </Button>
+      <Button onClickHandler={onSubmitHandler}>Submit</Button>
     </div>
   );
 };
