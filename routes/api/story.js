@@ -5,6 +5,7 @@ const auth = require("../../middleware/auth");
 const User = require("../../model/user");
 const Story = require("../../model/story");
 const Project = require("../../model/project");
+const Status = require("../../model/status");
 
 const { isProjectValid, isStoryValid } = require("../helper");
 
@@ -24,16 +25,19 @@ router.post("/:project_id", auth, (req, res) => {
     }
 
     Project.findById(req.params.project_id).then((project) => {
-      const story = new Story({
-        name: req.body.name,
-        description: req.body.description,
-        owner: user,
-        subtasks: [],
-      });
+      Status.findOne({ name: "Ready" }).then((status) => {
+        const story = new Story({
+          name: req.body.name,
+          description: req.body.description,
+          owner: user,
+          subtasks: [],
+          status: status,
+        });
 
-      story.save().then((story) => {
-        project.stories.unshift(story);
-        project.save().then((project) => res.json(project));
+        story.save().then((story) => {
+          project.stories.unshift(story);
+          project.save().then((project) => res.json(project.stories));
+        });
       });
     });
   });
@@ -57,7 +61,7 @@ router.get("/:project_id/:story_id", auth, (req, res) => {
   });
 });
 
-router.get("/:project_id/", auth, (req, res) => {
+router.get("/:project_id", auth, (req, res) => {
   User.findById(req.user.id).then((user) => {
     if (!isProjectValid(user, req)) {
       return res.status(404).json({ error: "Could not find project." });
@@ -66,7 +70,12 @@ router.get("/:project_id/", auth, (req, res) => {
     Project.findById(req.params.project_id)
       .populate("stories")
       .then((project) => {
-        res.json(project.stories);
+        const storyIds = project.stories.map((story) => story._id);
+        Story.find({ $in: storyIds })
+          .populate("status", "name")
+          .then((stories) => {
+            res.json(stories);
+          });
       });
   });
 });

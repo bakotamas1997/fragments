@@ -7,9 +7,11 @@ import Login from "./containers/auth/Login/Login";
 import Register from "./containers/auth/Register/Register";
 import NavigationBar from "./components/navigation/NavigationBar/NavigationBar";
 import ProjectCreator from "./containers/projects/ProjectCreator/ProjectCreator";
+import Dashboard from "./containers/stories/Dashboard";
 import axios from "axios";
 import Projects from "./containers/projects/Projects/Projects";
 import { Logout } from "./components/navigation/Logout/Logout";
+import StoryForm from "./containers/stories/StoryForm/StoryForm";
 
 const setAuthToken = (token) => {
   if (token) {
@@ -39,6 +41,8 @@ function App() {
         <Route path="/projects" component={Projects} exact />
         <Route path="/logout" component={Logout} exact />
         <Route path="/createProject" component={ProjectCreator} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/createStory" component={StoryForm} />
       </Switch>
     </div>
   );

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useHistory } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getProjects } from "../../../store/actions";
+import { getProjects, fetchStories } from "../../../store/actions";
 import Project from "../Project/Project";
 import Button from "../../../components/UI/Button/Button";
 
@@ -20,7 +20,7 @@ const Projects = () => {
   }, []);
 
   const onClickedProject = (id) => {
-    console.log(id);
+    dispatch(fetchStories(id, history));
   };
 
   const onDeleteProject = (id) => {

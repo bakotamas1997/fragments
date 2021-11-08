@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import authReducer from "./store/reducers/auth";
 import projectReducer from "./store/reducers/project";
+import storyReducer from "./store/reducers/stories";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -15,6 +16,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
   auth: authReducer,
   project: projectReducer,
+  story: storyReducer,
 });
 
 const store = createStore(

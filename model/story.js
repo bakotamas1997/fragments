@@ -19,6 +19,10 @@ const Story = new mongoose.Schema({
       ref: "subtask",
     },
   ],
+  status: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "status",
+  },
 });
 
 module.exports = mongoose.model("story", Story);

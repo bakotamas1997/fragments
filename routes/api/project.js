@@ -30,9 +30,15 @@ router.delete("/:project_id", auth, (req, res) => {
       const stories = project.stories.map((story) => {
         return story._id;
       });
-      Story.deleteMany({ _id: { $in: stories } }, () => {
-        Project.deleteOne({ _id: req.params.project_id }).then(() => {
-          res.send({ message: "Success" });
+      const filteredProjects = user.projects.filter(
+        (project) => project._id.toString() !== req.params.project_id
+      );
+      user.projects = filteredProjects;
+      user.save().then(() => {
+        Story.deleteMany({ _id: { $in: stories } }, () => {
+          Project.deleteOne({ _id: req.params.project_id }).then(() => {
+            res.send({ message: "Success" });
+          });
         });
       });
     });
