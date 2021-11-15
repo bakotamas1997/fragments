@@ -71,7 +71,7 @@ router.get("/:project_id", auth, (req, res) => {
       .populate("stories")
       .then((project) => {
         const storyIds = project.stories.map((story) => story._id);
-        Story.find({ $in: storyIds })
+        Story.find({ _id: { $in: storyIds } })
           .populate("status", "name")
           .then((stories) => {
             res.json(stories);
