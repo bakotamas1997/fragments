@@ -97,7 +97,7 @@ const ProjectProfile = () => {
     elements = <Spinner />;
   }
 
-  return <React.Fragment>{elements}</React.Fragment>;
+  return elements;
 };
 
 export default ProjectProfile;
